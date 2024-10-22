@@ -1,0 +1,136 @@
+<div class="container mt-4">
+    <h2>Employee Details</h2>
+    <!-- employee-details.component.html -->
+  
+
+     
+    <div class="form-group">
+      <input type="text" placeholder="Search employees..." [(ngModel)]="empName"  />
+     
+      <button (click)="onSearch()" [style.margin-left.px]="10"  class="form-control" class="btn btn-primary m-2">Search</button>
+    
+    </div>
+    
+    <div *ngIf="employees.length === 0">
+      No employees found.
+    </div>
+    <!-- Employee Form -->
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <div>
+          <label>Name</label>
+          <input [class.is-invalid]="employeeForm.get('empName')?.invalid &&
+                                    employeeForm.get('empName')?.touched" 
+                 formControlName="empName" type="text" class="form-control">
+                 
+          <div *ngIf="employeeForm.get('empName')?.invalid && employeeForm.get('empName')?.touched">
+            <small *ngIf="employeeForm.get('empName')?.errors?.['required']" class="text-danger">Name is required</small>
+            <small *ngIf="employeeForm.get('empName')?.errors?.['minlength']" class="text-danger">Name must be at least 3 characters</small>
+            <small *ngIf="employeeForm.get('empName')?.errors?.['maxlength']" class="text-danger">Name should Not More Than 15 characters</small>
+          </div>
+        </div>
+      
+      
+        <label for="empDOB">Date of Birth:</label>
+        <input type="date" id="empDOB" formControlName="empDOB" class="form-control" >
+        <div *ngIf="employeeForm.get('empDOB')?.invalid && employeeForm.get('empDOB')?.touched">
+          <small *ngIf="employeeForm.get('empDOB')?.errors?.['required']" class="text-danger">DOB is required</small>
+        </div>
+
+        <label for="empGender">Gender:</label>
+        <select id="empGender" formControlName="empGender" class="form-control" required>
+          <option value="">Select Gender</option>
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
+        <div *ngIf="employeeForm.get('empGender')?.invalid && employeeForm.get('empGender')?.touched">
+          <small *ngIf="employeeForm.get('empGender')?.errors?.['required']" class="text-danger">Gender is required</small>
+        </div>
+        
+
+        <label for="empPhone">Phone:</label>
+        <input id="empPhone" formControlName="empPhone" class="form-control" required>
+        <div *ngIf="employeeForm.get('empPhone')?.invalid && employeeForm.get('empPhone')?.touched">
+          <small *ngIf="employeeForm.get('empPhone')?.errors?.['required']" class="text-danger">PhoneNumber is required</small>
+          <small *ngIf="employeeForm.get('empPhone')?.errors?.['pattern']" class="text-danger">Number must be 10</small>
+        </div>
+
+        <label for="empEmail">Email:</label>
+        <input id="empEmail" formControlName="empEmail"  class="form-control"  required>
+        <div *ngIf="employeeForm.get('empEmail')?.invalid && employeeForm.get('empEmail')?.touched">
+          <small *ngIf="employeeForm.get('empEmail')?.errors?.['required']" class="text-danger">Email is required</small>
+          <small *ngIf="employeeForm.get('empEmail')?.errors?.['email']" class="text-danger">Enter a Valid Email</small>
+        </div>
+        
+        <label for="empAddress">Address:</label>
+        <input id="empAddress" formControlName="empAddress" class="form-control"  required>
+        <div *ngIf="employeeForm.get('empGender')?.invalid && employeeForm.get('empGender')?.touched">
+          <small *ngIf="employeeForm.get('empGender')?.errors?.['required']" class="text-danger">Gender is required</small>
+        </div>
+
+        <label for="jobTitle">Job Title:</label>
+        <input id="jobTitle" formControlName="jobTitle" class="form-control" required>
+        <div *ngIf="employeeForm.get('empGender')?.invalid && employeeForm.get('empGender')?.touched">
+          <small *ngIf="employeeForm.get('empGender')?.errors?.['required']" class="text-danger">Gender is required</small>
+        </div>
+
+        <label for="department">Department:</label>
+        <input id="department" formControlName="department" class="form-control" required>
+        <div *ngIf="employeeForm.get('empGender')?.invalid && employeeForm.get('empGender')?.touched">
+          <small *ngIf="employeeForm.get('empGender')?.errors?.['required']" class="text-danger">Gender is required</small>
+        </div>
+
+        <label for="salary">Salary:</label>
+        <input id="salary" formControlName="salary" type="number" class="form-control" required>
+        <div *ngIf="employeeForm.get('empGender')?.invalid && employeeForm.get('empGender')?.touched">
+          <small *ngIf="employeeForm.get('empGender')?.errors?.['required']" class="text-danger">Gender is required</small>
+        </div>
+
+      </div>
+  
+      <button type="submit" [disabled]="employeeForm.invalid" class="btn btn-primary mt-3">
+        {{ isEditing ? 'Update' : 'Submit' }}
+      </button>
+      <button *ngIf="isEditing" type="button" (click)="cancelEdit()" class="btn btn-secondary mt-3">Cancel</button>
+    </form>
+  
+    <!-- Employee Table -->
+    <table class="table table-bordered mt-4">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>DOB</th>
+          <th>Gender</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Job Title</th>
+          <th>Department</th>
+          <th>Salary</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees">
+          <td>{{ employee.empId }}</td>
+          <td>{{ employee.empName }}</td>
+          <td>{{ employee.empDOB }}</td>
+          <td>{{ employee.empGender }}</td>
+          <td>{{ employee.empPhone }}</td>
+          <td>{{ employee.empEmail }}</td>
+          <td>{{ employee.empAddress }}</td>
+          <td>{{ employee.jobTitle}}</td>
+          <td>{{ employee.department }}</td>
+          <td>{{ employee.salary }}</td>
+          <td>
+            <button (click)="editEmployee(employee)" class="btn btn-warning btn-sm">Edit</button>
+            <button (click)="deleteEmployee(employee.empId)" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
